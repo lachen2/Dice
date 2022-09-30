@@ -1,85 +1,80 @@
-  void setup()
-  {
-      noLoop();
-      size(300, 300);
-  }
-  void draw()
-  {
-    for (int numY = 0; numY > 5; numY ++) {
-      for (int numX = 0; numX > 5; numX ++) {
-        su = new Die(numX, numY);
+
+int startX = 150;
+int startY = (int)(Math.random() * 10) + 20;
+int endX = 0;
+int endY = 150;
+int bolt = 0;
+int stars = 0;
+float lightningWidth = 4;
+
+void setup()
+{
+  size(300, 300);
+  background(180, 200, 245);
+  frameRate(1);
+}
+
+void cloud(int bumps)
+{
+  noStroke();
+  if (startY < 100) {
+    for (int i = 0; i < bumps; i++) {
+      ellipse(startX - (int)(Math.random() * 70) + 35, startY + (int)(Math.random() * 25) - 30, 80, 40);
     }
-    }
-    ran = new Die(50, 50);
-    ran.show();
-    su.show();
-      //your code here
   }
-  void mousePressed()
-  {
-      background(100, 100, 100);
-      redraw();
+}
+
+void draw()
+{
+  if (bolt < 20) {
+  //clouds
+  fill(164, 198, 205);
+  cloud(8);
+  lightningWidth = 4;
+  fill(66, 50, 50, 10);
+  stroke((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255), 200);
+  while (startY < 295) {
+    //lightning bolt
+    
+    //make lightning thinner
+    strokeWeight(lightningWidth);
+    if (lightningWidth >= 0.4)
+      lightningWidth -= 0.05;
+      
+    endX = startX + (int)(Math.random() * 25) - 12;
+    endY = startY + (int)(Math.random() * 12);
+    line(startX, startY, endX, endY);
+    startX = endX;
+    startY = endY;
   }
-  Die ran, su; //declare a ran object
-  class Die //models one single dice cube
-  {
-      int diceX, diceY, num;
-      Die(int x, int y) //constructor
-      {
-        diceX = x;
-        diceY = y;
-        roll();
-          //variable initializations here
-      }
-      void roll() //member functions
-      {
-        num = (int)(Math.random() * 6 + 1);
-          //your code here
-      }
-      void show()
-      {
-        fill((int)(Math.random() * 220) + 25, (int)(Math.random() * 220) + 25, (int)(Math.random() * 220) + 25);
-        strokeWeight(1.5);
-        rect(diceX, diceY, 40, 40, 6);
-        fill(0, 0, 0);
-        text(num, 70, 70);
-        if (num == 1)
-          //middle dot
-          ellipse(diceX + 20, diceY + 20, 5, 5); 
-        else if (num == 2) {
-          //upper right and lower left dots
-          ellipse(diceX + 10, diceY + 10, 5, 5);
-          ellipse(diceX + 30, diceY + 30, 5, 5);
-        }
-        else if (num == 3) {
-          //diagonal from upper right to left dots
-          ellipse(diceX + 20, diceY + 20, 5, 5);
-          ellipse(diceX + 30, diceY + 10, 5, 5);
-          ellipse(diceX + 10, diceY + 30, 5, 5);
-        }
-        else if (num == 4) {
-          //four corners dots
-          ellipse(diceX + 30, diceY + 10, 5, 5);
-          ellipse(diceX + 10, diceY + 30, 5, 5);
-          ellipse(diceX + 10, diceY + 10, 5, 5);
-          ellipse(diceX + 30, diceY + 30, 5, 5);
-        }
-        else if (num == 5) {
-          //four corners and middle dots
-          ellipse(diceX + 30, diceY + 10, 5, 5);
-          ellipse(diceX + 10, diceY + 30, 5, 5);
-          ellipse(diceX + 10, diceY + 10, 5, 5);
-          ellipse(diceX + 30, diceY + 30, 5, 5);
-          ellipse(diceX + 20, diceY + 20, 5, 5); 
-        }
-        else {
-          //two column two rows dots
-          ellipse(diceX + 30, diceY + 10, 5, 5);
-          ellipse(diceX + 10, diceY + 30, 5, 5);
-          ellipse(diceX + 10, diceY + 10, 5, 5);
-          ellipse(diceX + 30, diceY + 30, 5, 5);
-          ellipse(diceX + 10, diceY + 20, 5, 5);
-          ellipse(diceX + 30, diceY + 20, 5, 5);
-        }
+  
+  //increase lightning bolt count
+  bolt ++;
+      
+  //rain or stars
+  noStroke();
+  fill((int)(Math.random() * 105), (int)(Math.random() * 105), (int)(Math.random() * 255), 170);
+  for (int star = 0; star < 30; star ++)
+    ellipse((int)(Math.random() * 301), (int)(Math.random() * 261) + 40, 1.5, 1.5);
+    
+  //fade
+  fill(0, 0, 0, 10);
+  rect(-10, -10, 320, 320);
   }
+  
+  else {
+    background(100, 223, 255);
+    fill(173, 238, 255);
+    cloud(6);
   }
+}
+    
+void mousePressed()
+{
+  //draw another lightning bolt
+  startX = mouseX;
+  startY = (int)(Math.random() * 10) + 20;
+  endX = 0;
+  endY = 150;
+  redraw();
+}
