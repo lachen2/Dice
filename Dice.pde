@@ -2,6 +2,7 @@
  int play1Total= 0;
  int play2Total= 0;
  int numRoll = 0;
+ int pointsX = 90;
   void setup()
   {
       noLoop();
@@ -11,6 +12,8 @@
       fill(0, 0, 0);
       text("Player 1: ", 20, 250);
       text("Player 2: ", 20, 280);
+      text("Total: ", 200, 250);
+      text("Total: ", 200, 280);
   }
   void mousePressed()
   {
@@ -29,23 +32,21 @@
         //make columns and rows of dice
         ran = new Die(numX, numY);
         ran.show();
+      }
     }
-    }
+    
     //points
-   if (numRoll == 1)
-     text(sum, 90, 250); 
-   else if (numRoll == 2)
-     text(sum, 90, 280); 
-   else if (numRoll == 3)
-     text(sum, 130, 250); 
-   else if (numRoll == 4)
-     text(sum, 130, 280); 
-   else if (numRoll == 5)
-     text(sum, 170, 250); 
-   else if (numRoll == 6)
-     text(sum, 170, 280); 
-   text("Total: " + play1Total, 220, 250);
-      //your code here
+   if (numRoll < 7) {
+     if (numRoll % 2 > 0) {
+       text(sum, pointsX, 250); 
+       play1Total += sum;
+     }
+     else {
+       text(sum, pointsX, 280);
+       pointsX += 40;
+       play2Total += sum;
+     }
+   }
   }
  Die ran; //declare a ran object
   class Die //models one single dice cube
@@ -62,8 +63,6 @@
       {
         num = (int)(Math.random() * 6 + 1);
         sum = sum + num;
-        totalSum += sum;
-        System.out.println(numRoll);
           //your code here
       }
       void show()
@@ -112,4 +111,4 @@
         }
   }
   }
-  }
+ 
