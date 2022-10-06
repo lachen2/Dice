@@ -8,13 +8,27 @@
       noLoop();
       size(300, 300);
       background(150, 200, 255);
+      noStroke();
+      fill(200, 200, 255);
+      rect(0, 0, 300, 220);
       textSize(15);
       fill(0, 0, 0);
       text("Player 1: ", 20, 250);
       text("Player 2: ", 20, 280);
-      text("Total: ", 200, 250);
-      text("Total: ", 200, 280);
+      text("Total: ", 210, 250);
+      text("Total: ", 210, 280);
   }
+  
+  void restart() {
+    //set values and screen back to orignal
+    sum = 0;
+    play1Total= 0;
+    play2Total= 0;
+    numRoll = 0;
+    pointsX = 90;
+    setup();
+  }
+  
   void mousePressed()
   {
     sum = 0;
@@ -22,11 +36,10 @@
   }
   void draw()
   {
-    noStroke();
-    fill(200, 200, 255);
-    rect(0, 0, 300, 220);
     stroke(0, 0, 0);
     numRoll ++;
+    
+    //draw dice
     for (int numY = 20; numY < 200; numY += 70) {
       for (int numX = 20; numX < 250; numX += 70) {
         //make columns and rows of dice
@@ -46,7 +59,13 @@
        pointsX += 40;
        play2Total += sum;
      }
+   if (numRoll == 5)
+     text(play1Total, 260, 250);
+   if (numRoll == 6)
+     text(play2Total, 260, 280);
    }
+   if (numRoll > 6)
+     restart();
   }
  Die ran; //declare a ran object
   class Die //models one single dice cube
@@ -57,13 +76,12 @@
         diceX = x;
         diceY = y;
         roll();
-          //variable initializations here
+        //variable initializations here
       }
       void roll() //member functions
       {
         num = (int)(Math.random() * 6 + 1);
         sum = sum + num;
-          //your code here
       }
       void show()
       {
